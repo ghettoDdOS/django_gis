@@ -1,0 +1,78 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgis/postgis:13-3.2-alpine
+    volumes:
+      - pg-data:/var/lib/postgres/data/pgdata
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+
+  app:
+    image: .
+    command: sh -c "
+      ./wait-for db:5432 &&
+      poetry run task collectstatic --clear &&
+      poetry run task migrate &&
+      poetry run task defaultadmin &&
+      poetry run task defaultfixtures &&
+      poetry run task gunicorn"
+    ports:
+      - "8000:8000"
+    volumes:
+      - static:/var/www/app/public/static
+      - media:/var/www/app/public/media
+      - logs:/var/www/app/private/logs
+      - ./.env:/var/www/app/.env
+    restart: always
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:1.17.6-alpine
+    volumes:
+      - static:/var/www/app/public/static
+      - media:/var/www/app/public/media
+      - logs:/var/www/app/private/logs
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./robots.txt:/etc/nginx/conf.d/robots.txt
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - app
+
+volumes:
+  static:
+    driver: local
+    driver_opts:
+      type: none
+      device: "docker/static"
+      o: bind
+  media:
+    driver: local
+    driver_opts:
+      type: none
+      device: "docker/media"
+      o: bind
+  pg-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "docker/db"
+      o: bind
+  logs:
+    driver: local
+    driver_opts:
+      type: none
+      device: "docker/logs"
+      o: bind

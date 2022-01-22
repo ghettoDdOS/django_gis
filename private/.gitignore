@@ -1,0 +1,8 @@
+*
+!.gitignore
+!logs/
+!static/
+!templates/
+!media/
+!locale/
+!locale/**
