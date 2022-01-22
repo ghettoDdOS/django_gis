@@ -1,6 +1,7 @@
 FROM python:3.8.11-alpine
 
-WORKDIR /var/www/app
+WORKDIR /app/
+# ENV HOME=/root/
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -22,17 +23,20 @@ RUN apk update\
     gdk-pixbuf-dev \
     python3-dev \
     make \
-    gdal
+    gdal \
+    gdal-dev \
+    geos \
+    geos-dev
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-ENV PATH="${PATH}:/root/.poetry/bin"
+# RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+# ENV PATH="${PATH}:/root/.poetry/bin"
 
 # install backend packages
-COPY poetry.toml poetry.toml
-COPY pyproject.toml pyproject.toml
-COPY poetry.lock poetry.lock
-RUN set -ex && poetry install --no-root
+COPY requirements.txt requirements.txt
+# COPY pyproject.toml pyproject.toml
+# COPY poetry.lock poetry.lock
+RUN set -ex && pip install -r requirements.txt
 
 COPY . .
 
-RUN ["chmod", "+x", "/var/www/app/wait-for"]
+RUN ["chmod", "+x", "/app/wait-for"]
