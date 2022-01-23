@@ -21,8 +21,7 @@ install:
 	poetry install --no-root
 	poetry run task initconfig --debug
 	@make migrate
-# poetry run task defaultadmin
-	@echo COMPLETE
+	poetry run task defaultadmin
 
 .PHONY: run
 run:

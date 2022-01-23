@@ -1,0 +1,38 @@
+# SCM
+.git/
+
+# Docker volumes directories
+docker/
+.docker/
+
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# DotENV environment variables file
+.env
+.env.local
+.env.production
+.env.example
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sublime-workspace
+
+# Byte-compiled / optimized / DLL files
+**/__pycache__/*
+**/*.py[cod]
+
+# Log files
+**.log

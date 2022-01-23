@@ -6,7 +6,7 @@ app_name = "city_map"
 
 urlpatterns = [
     path(
-        "",
+        "building/",
         BuildingViewsetAPI.as_view(
             {
                 "get": "list",
@@ -15,7 +15,7 @@ urlpatterns = [
         ),
     ),
     path(
-        "<int:pk>/",
+        "building/<int:pk>/",
         BuildingViewsetAPI.as_view(
             {
                 "get": "retrieve",
@@ -26,7 +26,7 @@ urlpatterns = [
         ),
     ),
     re_path(
-        r"^",
+        r"^building/",
         BuildingViewsetAPI.as_view(
             {
                 "get": "list",
