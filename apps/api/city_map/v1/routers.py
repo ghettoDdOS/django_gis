@@ -5,8 +5,8 @@ from .views import BuildingViewsetAPI
 app_name = "city_map"
 
 urlpatterns = [
-    path(
-        "building/",
+    re_path(
+        r"^building/$",
         BuildingViewsetAPI.as_view(
             {
                 "get": "list",
@@ -22,14 +22,6 @@ urlpatterns = [
                 "put": "update",
                 "patch": "partial_update",
                 "delete": "destroy",
-            }
-        ),
-    ),
-    re_path(
-        r"^building/",
-        BuildingViewsetAPI.as_view(
-            {
-                "get": "list",
             }
         ),
     ),

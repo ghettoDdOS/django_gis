@@ -1,3 +1,5 @@
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
 from rest_framework.viewsets import ModelViewSet
@@ -22,19 +24,39 @@ class BuildingViewsetAPI(ModelViewSet):
     lookup_url_kwarg = "pk"
 
     def get_queryset(self):
-        # query_params = self.request.query_params
+        query_params = self.request.query_params
         queryset = super().get_queryset()
 
-        # if query_params:
-        #     list(
-        #         filter(
-        #             lambda building: building.geom.area
-        #             > int(query_params.get("min", 0))
-        #             and building.geom.area
-        #             < int(query_params.get("max", 999999999)),
-        #             queryset,
-        #         )
-        #     )
-        # print(len(queryset))
-        # print(query_params)
+        if "min_area" in query_params:
+            min_area = float(query_params["min_area"])
+            queryset = [
+                building for building in queryset if building.area > min_area
+            ]
+
+        if "max_area" in query_params:
+            max_area = float(query_params["max_area"])
+
+            queryset = [
+                building for building in queryset if building.area < max_area
+            ]
+
         return queryset
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "min_area",
+                openapi.IN_QUERY,
+                description="Минимальная площадь",
+                type=openapi.TYPE_NUMBER,
+            ),
+            openapi.Parameter(
+                "max_area",
+                openapi.IN_QUERY,
+                description="Максимальная площадь",
+                type=openapi.TYPE_NUMBER,
+            ),
+        ]
+    )
+    def list(self, *args, **kwargs):
+        return super().list(*args, **kwargs)

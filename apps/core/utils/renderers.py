@@ -53,6 +53,7 @@ class GeoJSONRenderer(JSONRenderer):
 
 
 class TestGeoJSONRenderer(JSONRenderer):
+    format = "geojson"
     media_type = "application/vnd.geo+json"
 
     def render(self, data, *args, **kwargs):

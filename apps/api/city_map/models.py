@@ -15,6 +15,10 @@ class Building(models.Model):
         null=True,
     )
 
+    @property
+    def area(self):
+        return self.geom.area
+
     def __str__(self):
         return f"{self.address}"
 

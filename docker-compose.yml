@@ -24,8 +24,8 @@ services:
       poetry run task defaultadmin &&
       poetry run task defaultfixtures &&
       poetry run task gunicorn"
-    ports:
-      - 8000:8000
+    expose:
+      - 8000
     volumes:
       - ./.env:/var/www/app/.env
       - static:/var/www/app/public/static

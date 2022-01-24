@@ -5,9 +5,12 @@ from django.contrib.gis.geos.error import GEOSException
 from rest_framework.exceptions import ParseError
 from rest_framework.parsers import JSONParser
 
+from .renderers import TestGeoJSONRenderer
+
 
 class GeoJSONParser(JSONParser):
     media_type = "application/vnd.geo+json"
+    renderer_class = TestGeoJSONRenderer
 
     def parse(self, stream, *args, **kwargs):
         data = super().parse(stream, *args, **kwargs)
