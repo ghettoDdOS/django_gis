@@ -1,4 +1,4 @@
-from django.contrib.gis.geos import Polygon
+from django.contrib.gis.geos import GEOSGeometry, Polygon
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -7,6 +7,7 @@ from ..models import Building
 
 class BuildingSerializer(serializers.ModelSerializer):
     def validate_geom(self, poly: Polygon):
+        poly = GEOSGeometry(poly)
         if not poly.valid:
             raise ValidationError(
                 "Неверная геометрическая фигура: %s" % poly.valid_reason

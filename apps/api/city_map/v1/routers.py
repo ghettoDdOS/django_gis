@@ -13,6 +13,7 @@ urlpatterns = [
                 "post": "create",
             }
         ),
+        name="building",
     ),
     path(
         "building/<int:pk>/",
@@ -24,5 +25,6 @@ urlpatterns = [
                 "delete": "destroy",
             }
         ),
+        name="building-retrive",
     ),
 ]

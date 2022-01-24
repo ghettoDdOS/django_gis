@@ -14,6 +14,10 @@ migrate:
 migrations:
 	poetry run task makemigrations
 
+.PHONY: test
+test:
+	poetry run task test
+
 # Primary commands
 .PHONY: install
 install:

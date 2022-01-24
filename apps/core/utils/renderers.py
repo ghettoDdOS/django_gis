@@ -47,5 +47,4 @@ class GeoJSONRenderer(JSONRenderer):
             data = {"type": "FeatureCollection", "features": features}
         else:
             data = features[0]
-
         return super().render(data, *args, **kwargs)

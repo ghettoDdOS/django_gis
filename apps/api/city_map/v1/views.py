@@ -1,3 +1,4 @@
+from django.contrib.gis.geos import Polygon
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import JSONParser
@@ -24,6 +25,9 @@ class BuildingViewsetAPI(ModelViewSet):
     lookup_url_kwarg = "pk"
 
     def get_queryset(self):
+        # center = geos.Point(5, 5)
+        # radius = 30
+        # circle = center.buffer(radius)
         query_params = self.request.query_params
         queryset = super().get_queryset()
 

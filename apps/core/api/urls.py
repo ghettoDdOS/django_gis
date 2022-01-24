@@ -10,5 +10,8 @@ urlpatterns = [
         SchemaView.with_ui("swagger", cache_timeout=0),
         name="documentation",
     ),
-    path("v1/", include("apps.core.api.v1")),
+    path(
+        "v1/",
+        include("apps.core.api.v1"),
+    ),
 ]

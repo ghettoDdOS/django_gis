@@ -31,6 +31,7 @@ collectstatic = "task manage collectstatic --noinput"
 gunicorn = "gunicorn --timeout 300 config.wsgi:application -b 0.0.0.0:8000"
 defaultadmin = "task manage defaultadmin"
 defaultfixtures = "task manage defaultfixtures"
+test = "task manage test"
 
 
 [tool.poetry.dependencies]
