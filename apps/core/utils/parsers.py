@@ -5,16 +5,17 @@ from django.contrib.gis.geos.error import GEOSException
 from rest_framework.exceptions import ParseError
 from rest_framework.parsers import JSONParser
 
-from .renderers import TestGeoJSONRenderer
+from .renderers import GeoJSONRenderer
 
 
 class GeoJSONParser(JSONParser):
     media_type = "application/vnd.geo+json"
-    renderer_class = TestGeoJSONRenderer
+    renderer_class = GeoJSONRenderer
 
     def parse(self, stream, *args, **kwargs):
         data = super().parse(stream, *args, **kwargs)
-        assert data["type"] == "Feature", "Ожидался Feature в формате GeoJSON"
+        if data["type"] != "Feature":
+            raise ParseError("Ожидался Feature в формате GeoJSON")
 
         geometry_field = getattr(
             args[1].get("view").serializer_class.Meta, "geometry_field", None
@@ -30,5 +31,5 @@ class GeoJSONParser(JSONParser):
             }
         except GEOSException as error:
             raise ParseError(error)
-
+        print(output)
         return output

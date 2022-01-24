@@ -5,7 +5,7 @@ from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
 from rest_framework.viewsets import ModelViewSet
 
 from apps.core.utils.parsers import GeoJSONParser
-from apps.core.utils.renderers import TestGeoJSONRenderer
+from apps.core.utils.renderers import GeoJSONRenderer
 
 from ..models import Building
 from .serializers import BuildingSerializer
@@ -13,7 +13,7 @@ from .serializers import BuildingSerializer
 
 class BuildingViewsetAPI(ModelViewSet):
     renderer_classes = [
-        TestGeoJSONRenderer,
+        GeoJSONRenderer,
         JSONRenderer,
         BrowsableAPIRenderer,
     ]
@@ -59,4 +59,5 @@ class BuildingViewsetAPI(ModelViewSet):
         ]
     )
     def list(self, *args, **kwargs):
+        self.many = True
         return super().list(*args, **kwargs)
