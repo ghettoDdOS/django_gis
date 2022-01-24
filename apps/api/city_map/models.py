@@ -6,7 +6,7 @@ class Building(models.Model):
     id = models.AutoField(primary_key=True)
     geom = models.PolygonField(
         _("Координаты"),
-        srid=4362,
+        srid=4326,
         null=True,
     )
     address = models.CharField(

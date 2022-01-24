@@ -28,7 +28,9 @@ class GeoJSONRenderer(JSONRenderer):
                 {
                     "type": "Feature",
                     "geometry": json.loads(
-                        GEOSGeometry(item.pop(geometry_field)).geojson
+                        GEOSGeometry(
+                            item.pop(geometry_field), srid=4326
+                        ).geojson
                     ),
                     "properties": {
                         key: value

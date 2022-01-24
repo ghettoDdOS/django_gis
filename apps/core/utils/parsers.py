@@ -27,7 +27,9 @@ class GeoJSONParser(JSONParser):
         try:
             output = {
                 **data.get("properties", {}),
-                geometry_field: GEOSGeometry(json.dumps(data["geometry"])),
+                geometry_field: GEOSGeometry(
+                    json.dumps(data["geometry"]), srid=4326
+                ),
             }
         except GEOSException as error:
             raise ParseError(error)
