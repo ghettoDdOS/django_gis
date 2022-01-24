@@ -23,25 +23,29 @@ class GeoJSONRenderer(JSONRenderer):
         if not isinstance(data, ReturnList):
             data = [data]
 
-        try:
-            features = [
-                {
-                    "type": "Feature",
-                    "geometry": json.loads(
+        for item in data:
+            features = []
+            try:
+                geometry = (
+                    json.loads(
                         GEOSGeometry(
                             item.pop(geometry_field), srid=4326
                         ).geojson
                     ),
+                )
+            except Exception:
+                geometry = []
+            features.append(
+                {
+                    "type": "Feature",
+                    "geometry": geometry,
                     "properties": {
                         key: value
                         for key, value in item.items()
                         if key in fields or not fields
                     },
                 }
-                for item in data
-            ]
-        except Exception:
-            return super().render(*data, *args, **kwargs)
+            )
 
         if many:
             data = {"type": "FeatureCollection", "features": features}

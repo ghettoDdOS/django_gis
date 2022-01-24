@@ -1,4 +1,4 @@
-from django.contrib.gis.geos import Polygon
+from django.contrib.gis.forms.fields import GeometryField
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import JSONParser
@@ -8,6 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 from apps.core.utils.parsers import GeoJSONParser
 from apps.core.utils.renderers import GeoJSONRenderer
 
+from ..filters import filter_by_area, filter_by_distance
 from ..models import Building
 from .serializers import BuildingSerializer
 
@@ -25,24 +26,18 @@ class BuildingViewsetAPI(ModelViewSet):
     lookup_url_kwarg = "pk"
 
     def get_queryset(self):
-        # center = geos.Point(5, 5)
-        # radius = 30
-        # circle = center.buffer(radius)
-        query_params = self.request.query_params
         queryset = super().get_queryset()
 
-        if "min_area" in query_params:
-            min_area = float(query_params["min_area"])
-            queryset = [
-                building for building in queryset if building.area > min_area
-            ]
+        query_params = self.request.query_params
+        if query_params:
+            min_area = query_params.get("min_area", None)
+            max_area = query_params.get("max_area", None)
+            queryset = filter_by_area(queryset, min_area, max_area)
 
-        if "max_area" in query_params:
-            max_area = float(query_params["max_area"])
-
-            queryset = [
-                building for building in queryset if building.area < max_area
-            ]
+            lat = query_params.get("lat", None)
+            lon = query_params.get("lon", None)
+            radius = query_params.get("radius", None)
+            queryset = filter_by_distance(queryset, lat, lon, radius)
 
         return queryset
 
@@ -60,8 +55,29 @@ class BuildingViewsetAPI(ModelViewSet):
                 description="Максимальная площадь",
                 type=openapi.TYPE_NUMBER,
             ),
-        ]
+            openapi.Parameter(
+                "lat",
+                openapi.IN_QUERY,
+                description="Широта",
+                type=openapi.TYPE_NUMBER,
+            ),
+            openapi.Parameter(
+                "lon",
+                openapi.IN_QUERY,
+                description="Долгота",
+                type=openapi.TYPE_NUMBER,
+            ),
+            openapi.Parameter(
+                "radius",
+                openapi.IN_QUERY,
+                description="Радиус",
+                type=openapi.TYPE_NUMBER,
+            ),
+        ],
     )
     def list(self, *args, **kwargs):
         self.many = True
         return super().list(*args, **kwargs)
+
+    def create(self, *args, **kwargs):
+        return super().create(*args, **kwargs)
