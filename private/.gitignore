@@ -4,5 +4,7 @@
 !static/
 !templates/
 !media/
+!static/
+!static/**
 !locale/
 !locale/**

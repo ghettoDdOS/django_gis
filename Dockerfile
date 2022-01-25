@@ -13,16 +13,16 @@ RUN apk update\
     postgresql-dev \
     bash \
     libc-dev \
-    libffi-dev \
     curl \
-    jpeg-dev \
-    zlib-dev \
-    musl-dev \
     gcc \
-    gdk-pixbuf-dev \
+    cairo-dev \
     python3-dev \
+    gdk-pixbuf-dev  \
     make \
-    gdal
+    gdal \
+    gdal-dev \
+    geos \
+    geos-dev
 
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 ENV PATH="${PATH}:/root/.poetry/bin"

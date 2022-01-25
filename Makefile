@@ -14,6 +14,10 @@ migrate:
 migrations:
 	poetry run task makemigrations
 
+.PHONY: test
+test:
+	poetry run task test
+
 # Primary commands
 .PHONY: install
 install:
@@ -21,8 +25,7 @@ install:
 	poetry install --no-root
 	poetry run task initconfig --debug
 	@make migrate
-# poetry run task defaultadmin
-	@echo COMPLETE
+	poetry run task defaultadmin
 
 .PHONY: run
 run:

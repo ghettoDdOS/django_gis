@@ -5,17 +5,18 @@ from .views import BuildingViewsetAPI
 app_name = "city_map"
 
 urlpatterns = [
-    path(
-        "",
+    re_path(
+        r"^building/$",
         BuildingViewsetAPI.as_view(
             {
                 "get": "list",
                 "post": "create",
             }
         ),
+        name="building",
     ),
     path(
-        "<int:pk>/",
+        "building/<int:pk>/",
         BuildingViewsetAPI.as_view(
             {
                 "get": "retrieve",
@@ -24,13 +25,6 @@ urlpatterns = [
                 "delete": "destroy",
             }
         ),
-    ),
-    re_path(
-        r"^",
-        BuildingViewsetAPI.as_view(
-            {
-                "get": "list",
-            }
-        ),
+        name="building-retrive",
     ),
 ]
