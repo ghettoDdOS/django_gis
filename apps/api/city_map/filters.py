@@ -21,9 +21,9 @@ def filter_by_distance(queryset, lat=None, lon=None, radius=None):
                 D(m=float(radius)),
             )
         )
-        return queryset
     elif any([lat, lon, radius]):
         raise APIException(
             "Для использования фильтра по радиусу необходимо"
             + " задать все три параметра(lat, lon, radius)",
         )
+    return queryset

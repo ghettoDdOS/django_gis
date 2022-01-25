@@ -41,7 +41,7 @@ class AreaFiltersTest(APITestCase):
         Building.objects.bulk_create([Building(**item) for item in DATASET])
 
     def test_min_filters(self):
-        excepted_data = {
+        expected_data = {
             "type": "FeatureCollection",
             "features": [
                 {
@@ -92,11 +92,11 @@ class AreaFiltersTest(APITestCase):
         response.render()
         data = json.loads(response.content)
 
-        self.assertDictEqual(data, excepted_data)
+        self.assertDictEqual(data, expected_data)
         self.assertEqual(response.status_code, HTTP_200_OK)
 
     def test_max_filters(self):
-        excepted_data = {
+        expected_data = {
             "type": "FeatureCollection",
             "features": [
                 {
@@ -163,11 +163,11 @@ class AreaFiltersTest(APITestCase):
         response.render()
         data = json.loads(response.content)
 
-        self.assertDictEqual(data, excepted_data)
+        self.assertDictEqual(data, expected_data)
         self.assertEqual(response.status_code, HTTP_200_OK)
 
     def test_min_max_filters(self):
-        excepted_data = {
+        expected_data = {
             "type": "FeatureCollection",
             "features": [
                 {
@@ -207,5 +207,5 @@ class AreaFiltersTest(APITestCase):
         response.render()
         data = json.loads(response.content)
 
-        self.assertDictEqual(data, excepted_data)
+        self.assertDictEqual(data, expected_data)
         self.assertEqual(response.status_code, HTTP_200_OK)

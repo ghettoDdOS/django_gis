@@ -1,4 +1,3 @@
-from django.contrib.gis.forms.fields import GeometryField
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import JSONParser
@@ -76,8 +75,26 @@ class BuildingViewsetAPI(ModelViewSet):
         ],
     )
     def list(self, *args, **kwargs):
+        """Список всех строений FeaturesCollection в формате GeoJSON"""
         self.many = True
         return super().list(*args, **kwargs)
 
     def create(self, *args, **kwargs):
+        """Создать новую запись. Ожидается Feature в формате GeoJSON"""
         return super().create(*args, **kwargs)
+
+    def retrieve(self, *args, **kwargs):
+        """Получить строение по id Feature в формате GeoJSON"""
+        return super().retrieve(*args, **kwargs)
+
+    def update(self, *args, **kwargs):
+        """Обновить строение по id Feature в формате GeoJSON"""
+        return super().update(*args, **kwargs)
+
+    def destroy(self, *args, **kwargs):
+        """Удалить строение по id"""
+        return super().destroy(*args, **kwargs)
+
+    def partial_update(self, *args, **kwargs):
+        """Частично обновить строение по id Feature в формате GeoJSON"""
+        return super().partial_update(*args, **kwargs)

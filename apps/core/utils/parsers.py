@@ -24,14 +24,18 @@ class GeoJSONParser(JSONParser):
             geometry_field
         ), "Необходимо явно указать геометрическое поле в сериализаторе!"
 
+        output = output = {**data.get("properties", {})}
         try:
-            output = {
-                **data.get("properties", {}),
-                geometry_field: GEOSGeometry(
-                    json.dumps(data["geometry"]), srid=4326
-                ),
-            }
+            geometry = data.get("geometry", None)
+            if geometry:
+                output.update(
+                    {
+                        geometry_field: GEOSGeometry(
+                            json.dumps(geometry), srid=4326
+                        ),
+                    }
+                )
         except GEOSException as error:
             raise ParseError(error)
-        print(output)
+
         return output

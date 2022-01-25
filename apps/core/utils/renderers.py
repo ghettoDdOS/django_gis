@@ -20,21 +20,20 @@ class GeoJSONRenderer(JSONRenderer):
             + "в Meta классе сериализатора!"
         )
 
+        if not data:
+            return super().render(data, *args, **kwargs)
+
         if not isinstance(data, ReturnList):
             data = [data]
 
+        features = []
         for item in data:
-            features = []
             try:
-                geometry = (
-                    json.loads(
-                        GEOSGeometry(
-                            item.pop(geometry_field), srid=4326
-                        ).geojson
-                    ),
+                geometry = json.loads(
+                    GEOSGeometry(item.pop(geometry_field), srid=4326).geojson
                 )
             except Exception:
-                geometry = []
+                geometry = {}
             features.append(
                 {
                     "type": "Feature",

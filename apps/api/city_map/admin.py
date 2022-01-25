@@ -8,4 +8,5 @@ class BuildingAdmin(OSMGeoAdmin):
     list_display = (
         "id",
         "address",
+        "area",
     )
